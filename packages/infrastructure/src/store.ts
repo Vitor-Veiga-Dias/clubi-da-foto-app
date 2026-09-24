@@ -13,10 +13,13 @@ function storePath() {
   );
 }
 
+function canPersistToFilesystem() {
+  return !process.env.VERCEL || Boolean(process.env.CLUBI_DATA_PATH);
+}
+
 export function loadStore(seed: Publication[]): Publication[] {
   const file = storePath();
   if (!existsSync(file)) {
-    persistStore(seed);
     return seed.map((item) => structuredClone(item));
   }
   const parsed = JSON.parse(readFileSync(file, "utf8")) as StoreFile;
@@ -24,6 +27,7 @@ export function loadStore(seed: Publication[]): Publication[] {
 }
 
 export function persistStore(publications: Publication[]) {
+  if (!canPersistToFilesystem()) return;
   const file = storePath();
   mkdirSync(path.dirname(file), { recursive: true });
   const existing = existsSync(file)
@@ -44,6 +48,7 @@ export function loadAssets(seed: Asset[]): Asset[] {
 }
 
 export function persistAsset(asset: Asset) {
+  if (!canPersistToFilesystem()) return;
   const file = storePath();
   mkdirSync(path.dirname(file), { recursive: true });
   const existing = existsSync(file)
