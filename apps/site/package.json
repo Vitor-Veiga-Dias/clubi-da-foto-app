@@ -1,0 +1,29 @@
+{
+  "name": "@clubi/site",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@clubi/application": "*",
+    "@clubi/block-registry": "*",
+    "@clubi/design-tokens": "*",
+    "@clubi/domain": "*",
+    "@clubi/infrastructure": "*",
+    "next": "^15.5.3",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.3.5",
+    "typescript": "^5.9.2"
+  }
+}

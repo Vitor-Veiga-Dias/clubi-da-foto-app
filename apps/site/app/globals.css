@@ -1,0 +1,392 @@
+:root {
+  --clubi-font-display: var(--font-display), "Bricolage Grotesque", sans-serif;
+  --clubi-font-serif: var(--font-serif), "Fraunces", serif;
+  --clubi-font-italic: var(--font-serif), "Fraunces", serif;
+  --clubi-font-body: var(--font-body), "IBM Plex Sans", sans-serif;
+  --clubi-font-mono: var(--font-mono), "Space Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--clubi-paper);
+  color: var(--clubi-ink);
+  font-family: var(--clubi-font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--clubi-signal);
+}
+
+.masthead {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.9rem var(--clubi-margin);
+  z-index: 20;
+  border-bottom: 1px solid var(--clubi-line);
+}
+
+.masthead[data-overlay="true"] {
+  position: absolute;
+  inset: 0 0 auto;
+  border-bottom-color: color-mix(in srgb, var(--clubi-paper) 28%, transparent);
+  color: var(--clubi-paper);
+}
+
+.masthead-brand {
+  justify-self: start;
+}
+
+.camera-mark {
+  width: 2.4rem;
+  height: 1.5rem;
+  justify-self: center;
+  opacity: 0.85;
+}
+
+.wordmark {
+  font-family: var(--clubi-font-display);
+  font-weight: 800;
+  font-size: 1.85rem;
+  letter-spacing: -0.055em;
+  line-height: 0.8;
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.55rem;
+  color: inherit;
+}
+
+.clubi-i {
+  position: relative;
+  display: inline-block;
+  line-height: 0.8;
+}
+
+.clubi-tittle {
+  position: absolute;
+  width: 0.38em;
+  height: 0.38em;
+  border-radius: 50%;
+  background: var(--clubi-signal);
+  left: 50%;
+  top: -0.12em;
+  transform: translateX(-40%);
+}
+
+.wordmark-meta {
+  font-family: var(--clubi-font-mono);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  max-width: 7.5rem;
+  line-height: 1.25;
+  padding-bottom: 0.15rem;
+}
+
+.masthead-nav {
+  justify-self: end;
+  font-family: var(--clubi-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: flex;
+  gap: 1.4rem;
+}
+
+.masthead-nav a[data-active="true"] {
+  color: var(--clubi-signal);
+}
+
+/* ---------- topbar da rota de leitura ---------- */
+/* Do demo (.topbar-inner): max-width 760px, mono 11.5px, brand +
+   tag em signal-deep — sem nav e sem camera. */
+.article-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgb(246 241 230 / 92%);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--clubi-line);
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.article-topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: var(--clubi-topbar);
+  margin-inline: auto;
+  padding: 14px 24px;
+  font-family: var(--clubi-font-mono);
+  font-size: var(--clubi-size-mono);
+  color: var(--clubi-ink-soft);
+}
+
+.article-topbar-inner a {
+  color: var(--clubi-ink-soft);
+}
+
+.article-topbar-inner b {
+  font-family: var(--clubi-font-display);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--clubi-ink);
+}
+
+.article-topbar-tag {
+  color: var(--clubi-signal-deep);
+}
+
+.cover {
+  min-height: calc(100vh - 4.15rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(17rem, 24rem);
+}
+
+.cover-photo {
+  position: relative;
+  min-height: calc(100vh - 4.15rem);
+  overflow: hidden;
+  background: var(--clubi-ink);
+}
+
+.cover-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cover-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(10 8 6 / 5%) 0%, rgb(10 8 6 / 15%) 55%, rgb(10 8 6 / 78%) 100%);
+  pointer-events: none;
+}
+
+.cover-kicker {
+  position: absolute;
+  left: var(--clubi-margin);
+  top: 2rem;
+  z-index: 1;
+  font-family: var(--clubi-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clubi-paper);
+}
+
+.cover-title {
+  position: absolute;
+  left: var(--clubi-margin);
+  bottom: 7%;
+  z-index: 1;
+  font-family: var(--clubi-font-display);
+  font-weight: 800;
+  font-size: clamp(3.2rem, 10vw, 7.5rem);
+  line-height: 0.94;
+  letter-spacing: -0.055em;
+  color: var(--clubi-paper);
+  max-width: 9ch;
+}
+
+.cover-index {
+  padding: 3.5rem 2rem 3rem;
+  background: var(--clubi-paper);
+  border-left: 1px solid var(--clubi-line);
+  display: flex;
+  flex-direction: column;
+}
+
+.cover-issue {
+  font-family: var(--clubi-font-display);
+  font-weight: 800;
+  font-size: clamp(4.5rem, 8vw, 6.5rem);
+  letter-spacing: -0.06em;
+  line-height: 0.8;
+  margin: 0 0 0.35rem;
+}
+
+.cover-index h2 {
+  font-family: var(--clubi-font-italic);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.35rem;
+  color: var(--clubi-ink-soft);
+  margin: 0 0 1.5rem;
+}
+
+.toc {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc li {
+  display: grid;
+  grid-template-columns: 2.2rem auto 1fr auto;
+  gap: 0.65rem;
+  align-items: baseline;
+  padding: 1.05rem 0;
+  border-top: 1px solid var(--clubi-line-strong);
+}
+
+/* num ocupa a calha esquerda; tipo, titulo e tempo empilham na direita */
+.cover-index .toc li {
+  grid-template-columns: 2.2rem 1fr;
+  grid-template-rows: auto auto auto;
+  row-gap: 0.15rem;
+}
+
+.cover-index .toc-num {
+  grid-row: 1 / -1;
+}
+
+.cover-index .toc-type,
+.cover-index .toc-title,
+.cover-index .toc-time {
+  grid-column: 2;
+}
+
+.issue .toc li {
+  grid-template-columns: 2.4rem 4.75rem 1fr auto;
+  align-items: center;
+}
+
+.toc-num,
+.toc-type,
+.toc-time,
+.folio {
+  font-family: var(--clubi-font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.toc-title {
+  font-family: var(--clubi-font-display);
+  font-weight: 700;
+  font-size: 1.35rem;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.thumb {
+  width: 4.75rem;
+  height: 4.75rem;
+  object-fit: cover;
+  outline: 1px solid var(--clubi-ink);
+  outline-offset: -1px;
+}
+
+.issue,
+.about {
+  padding: 4.5rem var(--clubi-margin) 7rem;
+  max-width: 1180px;
+}
+
+.issue-head h1,
+.about h1 {
+  font-family: var(--clubi-font-display);
+  font-weight: 800;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  letter-spacing: -0.055em;
+  line-height: 0.86;
+  margin: 0.4rem 0 1.5rem;
+}
+
+.about {
+  max-width: 52rem;
+}
+
+.about .clubi-body {
+  margin-top: 2.5rem;
+}
+
+.next-matter {
+  display: block;
+  max-width: var(--clubi-article);
+  margin-inline: auto;
+  padding: 22px var(--clubi-article-pad) var(--clubi-article-pad-bottom);
+  border-top: 1px solid var(--clubi-line);
+}
+
+.next-matter span {
+  display: block;
+  font-family: var(--clubi-font-mono);
+  font-size: var(--clubi-size-ui-mono);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--clubi-ink-soft);
+  margin-bottom: 10px;
+}
+
+.next-matter strong {
+  display: block;
+  font-family: var(--clubi-font-display);
+  font-weight: 700;
+  font-size: var(--clubi-size-next);
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--clubi-signal);
+  outline-offset: 3px;
+}
+
+@media (max-width: 860px) {
+  .masthead,
+  .cover {
+    grid-template-columns: 1fr;
+  }
+
+  .camera-mark {
+    display: none;
+  }
+
+  .masthead-nav {
+    justify-self: start;
+  }
+
+  .cover-index {
+    border-left: 0;
+    border-top: 1px solid color-mix(in srgb, var(--clubi-ink) 14%, transparent);
+    padding-top: 2.5rem;
+  }
+
+  .cover-photo {
+    min-height: 72vh;
+  }
+
+  .issue .toc li {
+    grid-template-columns: 4.75rem 1fr;
+  }
+
+  .toc-num,
+  .issue .toc-time {
+    display: none;
+  }
+}

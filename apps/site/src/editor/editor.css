@@ -1,0 +1,276 @@
+.ed-shell {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 280px;
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+  background: var(--clubi-paper-alt);
+  color: var(--clubi-ink);
+}
+
+.ed-toolbar {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.7rem 1rem;
+  background: var(--clubi-paper);
+  border-bottom: 1px solid color-mix(in srgb, var(--clubi-ink) 14%, transparent);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.ed-wordmark {
+  font-family: var(--clubi-font-display);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.35rem;
+}
+
+.ed-breakpoints,
+.ed-add,
+.ed-actions,
+.ed-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.ed-list button,
+.ed-toolbar button,
+.ed-props button,
+.ed-layers button,
+.ed-actions a {
+  font-family: var(--clubi-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border: 1px solid color-mix(in srgb, var(--clubi-ink) 22%, transparent);
+  background: transparent;
+  color: inherit;
+  padding: 0.35rem 0.55rem;
+  cursor: pointer;
+}
+
+.ed-photo-toolbar {
+  position: absolute;
+  z-index: 20;
+  top: 0.5rem;
+  left: 50%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  align-items: center;
+  max-width: calc(100% - 1rem);
+  padding: 0.3rem;
+  background: var(--clubi-ink);
+  color: var(--clubi-paper);
+  transform: translate(-50%, -100%);
+}
+
+.ed-photo-toolbar button,
+.ed-photo-toolbar select {
+  font-family: var(--clubi-font-mono);
+  font-size: 0.62rem;
+  border: 1px solid rgb(255 255 255 / 35%);
+  background: transparent;
+  color: inherit;
+  padding: 0.25rem 0.4rem;
+}
+
+.ed-photo-replace {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--clubi-font-mono);
+  font-size: 0.62rem;
+}
+
+.ed-crop-overlay {
+  position: absolute;
+  z-index: 21;
+  inset: 1.5rem;
+  display: grid;
+  align-content: center;
+  gap: 0.55rem;
+  padding: 0.75rem;
+  background: rgb(10 8 6 / 88%);
+  color: var(--clubi-paper);
+  font-family: var(--clubi-font-mono);
+  font-size: 0.68rem;
+}
+
+.ed-crop-overlay label {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.ed-lightroom-picker {
+  position: absolute;
+  z-index: 22;
+  inset: 1rem;
+  display: grid;
+  align-content: start;
+  gap: 0.6rem;
+  padding: 0.8rem;
+  overflow: auto;
+  background: var(--clubi-paper);
+  color: var(--clubi-ink);
+  box-shadow: 0 12px 30px rgb(10 8 6 / 25%);
+}
+
+.ed-lightroom-picker__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--clubi-font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
+.ed-lightroom-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.ed-lightroom-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.ed-lightroom-grid button {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+  padding: 0.2rem;
+  border: 1px solid color-mix(in srgb, var(--clubi-ink) 18%, transparent);
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ed-lightroom-grid img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+}
+
+.ed-lightroom-grid span {
+  overflow: hidden;
+  font-family: var(--clubi-font-mono);
+  font-size: 0.55rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ed-toolbar button[data-active="true"],
+.ed-layers button[data-active="true"] {
+  background: var(--clubi-ink);
+  color: var(--clubi-paper);
+}
+
+.ed-publish {
+  background: var(--clubi-signal) !important;
+  border-color: var(--clubi-signal) !important;
+  color: var(--clubi-paper) !important;
+}
+
+.ed-layers,
+.ed-props {
+  padding: 1rem;
+  background: var(--clubi-paper);
+  overflow: auto;
+  max-height: calc(100vh - 3.2rem);
+}
+
+.ed-layers ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 0.6rem;
+}
+
+.ed-layer-section,
+.ed-layer-block {
+  width: 100%;
+  text-align: left;
+  margin: 0.15rem 0;
+}
+
+.ed-panel-label,
+.ed-kicker,
+.ed-message {
+  font-family: var(--clubi-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ed-canvas {
+  overflow: auto;
+  padding: 2rem 0 6rem;
+  background: var(--clubi-paper-alt);
+}
+
+.ed-canvas .clubi-publication {
+  background: var(--clubi-paper);
+  min-height: 100%;
+}
+
+.ed-field {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.85rem 0;
+  font-family: var(--clubi-font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.ed-field input,
+.ed-field textarea,
+.ed-field select {
+  font-family: var(--clubi-font-body);
+  font-size: 0.92rem;
+  text-transform: none;
+  letter-spacing: 0;
+  width: 100%;
+  border: 1px solid color-mix(in srgb, var(--clubi-ink) 22%, transparent);
+  background: var(--clubi-paper);
+  color: var(--clubi-ink);
+  padding: 0.45rem;
+}
+
+.ed-list {
+  padding: 3rem var(--clubi-margin);
+}
+
+.ed-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.ed-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--clubi-ink) 16%, transparent);
+}
+
+@media (max-width: 960px) {
+  .ed-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .ed-layers,
+  .ed-props {
+    max-height: none;
+  }
+}

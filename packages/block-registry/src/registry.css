@@ -1,0 +1,668 @@
+/* ============================================================
+   Clubi — registro de blocos
+   Duas mecanicas de layout convivem aqui:
+
+   1. EDITOR  ([data-mode="edit"] ou [data-preview]) -> grid de 12 colunas
+      absoluto. O EditChrome depende dele para arrastar colunas.
+
+   2. LEITURA EDITORIAL ([data-mode="read"] + tipo editorial)
+      -> coluna unica de 680px, fluxo continuo do documento, como o
+      <article class="article"> da direcao visual.
+   ============================================================ */
+
+.clubi-publication {
+  background: var(--clubi-paper);
+  color: var(--clubi-ink);
+}
+
+/* ---------- 1. casca de grid (editor + tipos nao-editoriais) ---------- */
+
+.clubi-section {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--clubi-gutter);
+  row-gap: 1.25rem;
+  width: min(100%, var(--clubi-max-width));
+  margin-inline: auto;
+  padding-inline: var(--clubi-margin);
+  padding-block: 2.5rem;
+  position: relative;
+}
+
+.clubi-block {
+  grid-column: var(--col-start) / span var(--col-span);
+  order: var(--order);
+  z-index: var(--z);
+  min-width: 0;
+}
+
+.clubi-section[data-mode="freeform"] {
+  min-height: 720px;
+  display: block;
+}
+
+.clubi-section[data-mode="freeform"] > .clubi-block,
+.clubi-section[data-mode="freeform"] > .clubi-block--edit {
+  position: absolute;
+  left: var(--freeform-x);
+  top: var(--freeform-y);
+  width: var(--freeform-width);
+  height: var(--freeform-height);
+  transform: rotate(var(--freeform-rotation));
+  transform-origin: center;
+}
+
+.clubi-section[data-mode="freeform"] .clubi-block[data-type="image"] {
+  height: var(--freeform-height);
+}
+
+.clubi-section[data-mode="freeform"] .clubi-block--edit {
+  cursor: grab;
+}
+
+.clubi-section[data-mode="freeform"] .clubi-block--edit:active {
+  cursor: grabbing;
+}
+
+.clubi-block[data-type="image"] {
+  aspect-ratio: var(--aspect);
+  overflow: hidden;
+}
+
+.clubi-section[data-mode="carousel"] {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+}
+
+/* ---------- 2. casca editorial de leitura ----------
+   O modificador .clubi-publication--editorial so entra em modo de leitura
+   com tipo editorial (essay/article/column/interview). No editor ele nao
+   existe, entao o grid de 12 colunas continua sendo a mecanica. */
+
+.clubi-publication--editorial .clubi-section {
+  display: block;
+  width: 100%;
+  max-width: var(--clubi-article);
+  margin-inline: auto;
+  padding-inline: var(--clubi-article-pad);
+  padding-block: 0;
+}
+
+.clubi-publication--editorial .clubi-section[data-mode="freeform"] {
+  min-height: 0;
+}
+
+/* a abertura sangra a coluna inteira */
+.clubi-publication--editorial .clubi-section[data-mode="opening"] {
+  max-width: none;
+  padding-inline: 0;
+}
+
+/* blocos viram fluxo: perdem a posicao absoluta no grid */
+.clubi-publication--editorial .clubi-block {
+  grid-column: auto;
+  width: 100%;
+  max-width: none;
+  transform: none;
+}
+
+/* respiro do topo do artigo (o demo usa padding:34px 22px 90px);
+   a abertura, que sangra no topo, fica de fora */
+.clubi-publication--editorial .clubi-section:first-child:not([data-mode="opening"]),
+.clubi-publication--editorial .clubi-section[data-mode="opening"] + .clubi-section {
+  padding-top: var(--clubi-article-pad-block);
+}
+
+.clubi-publication--editorial .clubi-section:last-child {
+  padding-bottom: var(--clubi-article-pad-bottom);
+}
+
+/* ---------- 3. abertura: foto + overlay ---------- */
+
+.clubi-opening {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: var(--clubi-ink);
+}
+
+/* 4/5 no celular, 16/9 no desktop — igual a demo */
+.clubi-opening {
+  aspect-ratio: 4 / 5;
+}
+
+@media (min-width: 720px) {
+  .clubi-opening {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+.clubi-opening .clubi-photo,
+.clubi-opening img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* mantem o sujeito no terco superior quando o crop vira 16/9 */
+  object-position: center 20%;
+}
+
+.clubi-opening-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px 20px 34px;
+  background: linear-gradient(
+    180deg,
+    rgb(10 8 6 / 5%) 0%,
+    rgb(10 8 6 / 15%) 55%,
+    rgb(10 8 6 / 78%) 100%
+  );
+}
+
+.clubi-opening-extra {
+  width: min(100%, var(--clubi-max-width));
+  margin-inline: auto;
+  padding: var(--clubi-figure-gap) var(--clubi-margin) 0;
+}
+
+.clubi-opening--lightroom {
+  aspect-ratio: auto;
+  background: var(--clubi-ink);
+}
+
+.clubi-opening--lightroom .clubi-lightroom {
+  min-height: 0;
+}
+
+.clubi-opening-lightroom-title {
+  padding: 28px var(--clubi-margin) 34px;
+  background: var(--clubi-ink);
+}
+
+.clubi-opening-lightroom-title .clubi-heading {
+  color: var(--clubi-paper);
+}
+
+.clubi-opening-extra .clubi-lightroom-figure {
+  margin: 0;
+}
+
+@media (min-width: 720px) {
+  .clubi-opening-overlay {
+    padding: 56px 64px 60px;
+  }
+}
+
+.clubi-opening-kicker {
+  font-family: var(--clubi-font-mono);
+  font-size: var(--clubi-size-mono);
+  color: #f3c7bc;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 10px;
+}
+
+.clubi-opening-overlay h1,
+.clubi-opening-overlay .clubi-heading {
+  font-family: var(--clubi-font-display);
+  font-weight: 700;
+  color: var(--clubi-paper);
+  font-size: var(--clubi-size-hero);
+  line-height: 0.94;
+  letter-spacing: -0.01em;
+  margin: 0;
+  max-width: 12ch;
+}
+
+.clubi-heading {
+  font-family: var(--clubi-font-display);
+  font-weight: 700;
+  font-size: var(--clubi-size-block-title);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+h1.clubi-heading {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 0.94;
+}
+
+h3.clubi-heading {
+  font-size: clamp(1.4rem, 2.6vw, 1.95rem);
+  line-height: 1.06;
+}
+
+.clubi-subheading {
+  font-family: var(--clubi-font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--clubi-size-dek);
+  line-height: 1.35;
+  color: var(--clubi-ink-soft);
+  max-width: 100%;
+  margin: 0;
+}
+
+.clubi-body {
+  font-family: var(--clubi-font-body);
+  font-size: var(--clubi-body-size);
+  line-height: var(--clubi-body-leading);
+  color: var(--clubi-ink-soft);
+  max-width: var(--clubi-measure);
+  margin: 0;
+}
+
+.clubi-quote {
+  font-family: var(--clubi-font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--clubi-size-quote);
+  line-height: 1.3;
+  color: var(--clubi-ink);
+  max-width: 100%;
+  margin: 0;
+  padding-left: 22px;
+  border-left: 3px solid var(--clubi-signal);
+}
+
+.clubi-quote cite {
+  display: block;
+  font-family: var(--clubi-font-mono);
+  font-style: normal;
+  font-size: 11px;
+  color: var(--clubi-ink-soft);
+  margin-top: 12px;
+}
+
+.clubi-meta,
+.clubi-caption {
+  font-family: var(--clubi-font-mono);
+  font-size: var(--clubi-size-ui-mono);
+  letter-spacing: 0.04em;
+  margin: 0;
+  color: var(--clubi-ink-soft);
+}
+
+/* rotulo do demo: mono, caixa alta, vermelho */
+.clubi-caption[data-variant="label"],
+.clubi-meta[data-variant="label"] {
+  color: var(--clubi-signal-deep);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* legenda do demo: mono, minuscula, cinza */
+.clubi-caption[data-variant="cap"],
+.clubi-meta[data-variant="cap"] {
+  color: var(--clubi-ink-soft);
+}
+
+/* a legenda do demo alinha as duas pontas:
+   <span>Duas leituras…</span><span>P&B · Cor</span> */
+.clubi-meta[data-variant="cap"]:has(span),
+.clubi-caption[data-variant="cap"]:has(span) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.clubi-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+  transition: transform 220ms ease, filter 220ms ease;
+}
+
+.clubi-lightroom-figure {
+  margin: var(--clubi-figure-gap) 0;
+}
+
+.clubi-lightroom {
+  position: relative;
+  width: 100%;
+  min-height: 220px;
+  overflow: hidden;
+  background: var(--clubi-ink);
+}
+
+.clubi-lightroom__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  border: 0;
+}
+
+.clubi-lightroom__loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--clubi-paper);
+  font-family: var(--clubi-font-mono);
+  font-size: var(--clubi-size-ui-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+.clubi-lightroom--loaded .clubi-lightroom__loading {
+  display: none;
+}
+
+.clubi-lightroom--fallback {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 0.5rem;
+  padding: 2rem;
+  color: var(--clubi-paper);
+  font-family: var(--clubi-font-mono);
+  text-align: center;
+}
+
+.clubi-lightroom--fallback span {
+  font-size: var(--clubi-size-ui-mono);
+}
+
+.clubi-lightroom-figure figcaption {
+  margin-top: 0.75rem;
+}
+
+@media (hover: hover) {
+  .clubi-block[data-type="image"]:hover .clubi-photo {
+    transform: scale(1.025);
+    filter: saturate(1.03);
+  }
+}
+
+.clubi-gallery {
+  display: grid;
+  gap: var(--clubi-gutter);
+}
+
+/* O gesto do demo: 2 colunas, filete de 2px e fundo preto.
+   Nao e uma galeria — e uma folha de contato. O grid cresce sozinho
+   para qualquer numero de fotos: N fotos => ceil(N/2) linhas. */
+.clubi-gallery--diptych,
+.clubi-gallery--contact-sheet {
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--clubi-ink);
+}
+
+.clubi-gallery--diptych .clubi-photo,
+.clubi-gallery--contact-sheet .clubi-photo {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 3 / 4;
+}
+
+/* nao escalar: o filete de 2px tem que ficar alinhado */
+@media (hover: hover) {
+  .clubi-gallery--diptych .clubi-photo:hover,
+  .clubi-gallery--contact-sheet .clubi-photo:hover {
+    transform: none;
+    filter: none;
+  }
+}
+
+/* ---------- 4. ritmo vertical do artigo (transcrito da demo) ---------- */
+
+.clubi-publication--editorial .clubi-block[data-type="text"] {
+  margin: 0 0 18px;
+}
+
+/* a linha fina (publication.dek) entra antes do byline, como .dek da demo */
+.clubi-dek {
+  font-family: var(--clubi-font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--clubi-size-dek);
+  line-height: 1.35;
+  color: var(--clubi-ink-soft);
+  margin: 0 0 22px;
+}
+
+.clubi-publication--editorial .clubi-block[data-type="subheading"] {
+  margin: 0 0 22px;
+}
+
+.clubi-publication--editorial .clubi-block[data-type="quote"] {
+  margin: 34px 0;
+}
+
+/* --- respiro das chapas ---
+   No demo quem carrega o respiro e o rotulo (em cima) e a legenda (embaixo);
+   a foto encosta nos dois:
+   .diptych-label{padding:0 22px 12px}  .diptych-cap{padding:10px 22px 0} */
+.clubi-publication--editorial .clubi-block[data-type="caption"][data-variant="label"] {
+  margin: 0 0 0 0;
+  padding-top: var(--clubi-figure-gap);
+  padding-bottom: 12px;
+}
+
+.clubi-publication--editorial .clubi-block[data-type="caption"][data-variant="cap"] {
+  margin: var(--clubi-figure-gap) 0;
+  padding-top: 10px;
+}
+
+/* as fotos quebram a margem do artigo — nao a viewport */
+.clubi-publication--editorial .clubi-block[data-type="image"],
+.clubi-publication--editorial .clubi-block[data-type="gallery"] {
+  width: auto;
+  margin: var(--clubi-figure-gap) var(--clubi-breakout);
+}
+
+/* a foto encosta no rotulo acima dela e na legenda abaixo dela */
+.clubi-publication--editorial .clubi-block[data-type="caption"] + .clubi-block[data-type="image"],
+.clubi-publication--editorial .clubi-block[data-type="caption"] + .clubi-block[data-type="gallery"],
+.clubi-publication--editorial .clubi-block[data-type="image"]:has(+ .clubi-block[data-type="caption"]),
+.clubi-publication--editorial .clubi-block[data-type="gallery"]:has(+ .clubi-block[data-type="caption"]) {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* o rotulo precisa perder o respiro quando nao ha foto depois dele */
+.clubi-publication--editorial .clubi-block[data-type="caption"][data-variant="label"]:last-child {
+  padding-top: 0;
+  margin-bottom: 22px;
+}
+
+/* capitular: o primeiro paragrafo depois do byline — ou opt-in explicito
+   via style.tokenRefs.lead = "true" */
+.clubi-publication--editorial
+  .clubi-byline
+  + .clubi-block[data-type="text"]
+  .clubi-body::first-letter,
+.clubi-body--lead::first-letter {
+  font-family: var(--clubi-font-serif);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 3.6em;
+  float: left;
+  line-height: 0.8;
+  padding: 6px 8px 0 0;
+  color: var(--clubi-ink);
+}
+
+/* ---------- 5. byline e creditos (derivados de publication.meta) ---------- */
+
+.clubi-byline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  font-family: var(--clubi-font-mono);
+  font-size: var(--clubi-size-mono);
+  color: var(--clubi-ink-soft);
+  border-top: 1px solid var(--clubi-line-strong);
+  border-bottom: 1px solid var(--clubi-line-strong);
+  padding: 11px 0;
+  margin: 0 0 30px;
+}
+
+.clubi-byline b {
+  font-family: var(--clubi-font-body);
+  font-weight: 600;
+  color: var(--clubi-ink);
+}
+
+.clubi-credits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 56px;
+  padding-top: 26px;
+  border-top: 1px solid var(--clubi-line-strong);
+}
+
+@media (max-width: 560px) {
+  .clubi-credits {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+}
+
+.clubi-credits h4 {
+  margin: 0 0 4px;
+  font-family: var(--clubi-font-mono);
+  font-size: var(--clubi-size-ui-mono);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--clubi-signal-deep);
+}
+
+.clubi-credits p {
+  margin: 0;
+  font-family: var(--clubi-font-body);
+  font-weight: 600;
+  font-size: 14.5px;
+}
+
+.clubi-divider {
+  border: 0;
+  border-top: 1px solid var(--clubi-ink);
+  margin: 0;
+}
+
+.clubi-dot {
+  display: inline-block;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--clubi-signal);
+  margin-right: 0.75rem;
+  vertical-align: middle;
+}
+
+.clubi-dot--lone {
+  margin: 1rem auto;
+}
+
+@media (max-width: 860px) {
+  .clubi-section {
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+  }
+
+  .clubi-block {
+    grid-column: var(--col-start-t) / span var(--col-span-t);
+  }
+}
+
+@media (max-width: 640px) {
+  .clubi-section {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .clubi-block {
+    grid-column: var(--col-start-m) / span var(--col-span-m);
+    order: var(--order-m);
+  }
+
+  .clubi-block[data-type="image"] {
+    aspect-ratio: var(--aspect-m);
+  }
+}
+
+.clubi-publication[data-mode="edit"] .clubi-section {
+  outline: 1px dashed color-mix(in srgb, var(--clubi-ink) 18%, transparent);
+}
+
+.clubi-publication[data-mode="edit"] .clubi-photo {
+  pointer-events: none;
+}
+
+.clubi-block--edit {
+  position: relative;
+}
+
+.clubi-block--edit[data-selected="true"] {
+  outline: 1px solid var(--clubi-signal);
+  outline-offset: 3px;
+}
+
+/* The contextual image controls sit outside the photo bounds. */
+.clubi-block--edit[data-selected="true"][data-type="image"] {
+  overflow: visible;
+}
+
+.clubi-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  border: 0;
+  padding: 0;
+  background: var(--clubi-signal);
+  cursor: ew-resize;
+  z-index: 6;
+}
+
+.clubi-handle--start {
+  left: -4px;
+}
+
+.clubi-handle--end {
+  right: -4px;
+}
+
+.clubi-publication[data-preview="tablet"] .clubi-section {
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  max-width: 860px;
+}
+
+.clubi-publication[data-preview="tablet"] .clubi-block {
+  grid-column: var(--col-start-t) / span var(--col-span-t);
+}
+
+.clubi-publication[data-preview="mobile"] .clubi-section {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  max-width: 420px;
+  padding-inline: 20px;
+}
+
+.clubi-publication[data-preview="mobile"] .clubi-block {
+  grid-column: var(--col-start-m) / span var(--col-span-m);
+  order: var(--order-m);
+}
+
+.clubi-publication[data-preview="mobile"] .clubi-block[data-type="image"] {
+  aspect-ratio: var(--aspect-m);
+}
+
+@media (hover: hover) {
+  .clubi-publication[data-mode="edit"] .clubi-block[data-type="image"]:hover .clubi-photo,
+  .clubi-publication[data-mode="edit"] .clubi-gallery .clubi-photo:hover {
+    transform: none;
+    filter: none;
+  }
+}

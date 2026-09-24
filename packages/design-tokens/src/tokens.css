@@ -1,0 +1,75 @@
+:root {
+  --clubi-paper: #f6f1e6;
+  --clubi-paper-alt: #ece3ce;
+  --clubi-ink: #1b1712;
+  --clubi-ink-soft: #4a443b;
+  --clubi-signal: #ff3e1f;
+  --clubi-signal-deep: #c42a10;
+  --clubi-signal-tint: #fbd9cc;
+  --clubi-line: rgb(27 23 18 / 16%);
+  --clubi-line-strong: rgb(27 23 18 / 32%);
+
+  --clubi-max-width: 1180px;
+  --clubi-reading: 42rem;
+  --clubi-gutter: 24px;
+  --clubi-margin: 64px;
+  --clubi-columns: 12;
+
+  /* --- casca editorial (ensaio / materia) --- */
+  --clubi-article: 680px;
+  --clubi-article-pad: 22px;
+  --clubi-article-pad-block: 34px;
+  --clubi-article-pad-bottom: 90px;
+  /* quanto uma foto "sangra" a coluna de leitura, do demo:
+     .diptych-wrap{margin:44px -22px} */
+  --clubi-breakout: -22px;
+  /* respiro acima/abaixo de cada chapa (44px -> 56px no desktop) */
+  --clubi-figure-gap: 44px;
+  --clubi-topbar: 760px;
+
+  --clubi-font-display: "Bricolage Grotesque", sans-serif;
+  --clubi-font-italic: "Fraunces", serif;
+  --clubi-font-serif: "Fraunces", serif;
+  --clubi-font-body: "IBM Plex Sans", sans-serif;
+  --clubi-font-mono: "Space Mono", monospace;
+
+  --clubi-body-size: 1rem;
+  --clubi-body-leading: 1.6;
+  --clubi-measure: 62ch;
+
+  /* --- escala tipografica do demo --- */
+  --clubi-size-hero: clamp(40px, 10vw, 88px);
+  --clubi-size-article-h1: clamp(2.5rem, 6vw, 5.5rem);
+  --clubi-size-block-title: clamp(26px, 3.4vw, 40px);
+  --clubi-size-dek: clamp(19px, 3vw, 23px);
+  --clubi-size-quote: clamp(21px, 3.4vw, 26px);
+  --clubi-size-next: clamp(22px, 4vw, 30px);
+  --clubi-size-ui-mono: 10.5px;
+  --clubi-size-mono: 11.5px;
+}
+
+@media (min-width: 720px) {
+  :root {
+    --clubi-article-pad: 24px;
+    --clubi-article-pad-block: 56px;
+    --clubi-article-pad-bottom: 110px;
+    --clubi-breakout: -24px;
+    --clubi-figure-gap: 56px;
+  }
+}
+
+@media (max-width: 860px) {
+  :root {
+    --clubi-gutter: 20px;
+    --clubi-margin: 32px;
+    --clubi-columns: 8;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --clubi-gutter: 16px;
+    --clubi-margin: 20px;
+    --clubi-columns: 4;
+  }
+}

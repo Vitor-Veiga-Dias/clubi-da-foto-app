@@ -1,0 +1,16 @@
+{
+  "name": "clubi-da-foto",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w @clubi/site",
+    "build": "npm run build -w @clubi/site",
+    "lint": "npm run lint -w @clubi/site"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

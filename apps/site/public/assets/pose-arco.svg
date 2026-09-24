@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 2000" role="img" aria-label="Placeholder pose no arco">
+  <rect width="1600" height="2000" fill="#2a241c"/>
+  <path d="M220 1780 V720 C220 380 560 180 800 180 C1040 180 1380 380 1380 720 V1780" fill="none" stroke="#f6f1e6" stroke-width="6"/>
+  <ellipse cx="800" cy="980" rx="210" ry="520" fill="#c4b39a"/>
+  <circle cx="800" cy="560" r="120" fill="#ece3ce"/>
+  <rect x="720" y="1080" width="160" height="700" fill="#1b1712"/>
+  <circle cx="1480" cy="120" r="18" fill="#ff3e1f"/>
+</svg>
